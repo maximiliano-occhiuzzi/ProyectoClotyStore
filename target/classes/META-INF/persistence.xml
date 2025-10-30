@@ -8,7 +8,6 @@
   <persistence-unit name="clotyStore" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-    <class>com.app.logica.Productos</class>
 
     <properties>
       <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

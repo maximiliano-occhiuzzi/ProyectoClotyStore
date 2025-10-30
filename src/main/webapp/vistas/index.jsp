@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.app.logica.Productos" %>
+
 
 <!doctype html>
 <html lang="es">
@@ -9,6 +10,12 @@
     <title>clotyStore - Tienda Online</title>
     <link rel="stylesheet" href="estilos/index.css">
   </head>
+
+
+<%
+    List<Productos> lista = (List<Productos>) request.getAttribute("listaProductos");
+%>
+
 
   <body>
     <header class="header">

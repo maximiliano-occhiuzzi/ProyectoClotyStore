@@ -6,36 +6,48 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Servlet implementation class LeerDatos
- */
+import com.app.logica.Productos;
+
 @WebServlet("/LeerDatos")
 public class LeerDatos extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public LeerDatos() {
-        super();
-        // TODO Auto-generated constructor stub
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        List<Productos> lista = new ArrayList<>();
+
+        // Conexión a la base de datos
+        String url = "jdbc:mysql://localhost:3306/cloty_store";  // cambialo por tu DB real
+        String user = "root";  // usuario de tu BD
+        String pass = "";      // contraseña de tu BD
+
+        try (Connection con = DriverManager.getConnection(url, user, pass)) {
+
+            String sql = "SELECT id, nombre, precio, stock, imagen FROM productos WHERE stock > 0";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Productos p = new Productos();
+                p.setId(rs.getInt("id"));
+                p.setNombre(rs.getString("nombre"));
+                p.setPrecio(rs.getDouble("precio"));
+                p.setStock(rs.getInt("stock"));
+                p.setImagen(rs.getString("imagen"));
+                lista.add(p);
+            }
+
+            request.setAttribute("listaProductos", lista);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.getWriter().println("Error al leer productos: " + e.getMessage());
+        }
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
 }
