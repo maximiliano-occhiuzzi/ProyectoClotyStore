@@ -25,16 +25,43 @@ function renderProducts() {
   var endIndex = startIndex + ITEMS_PER_PAGE;
   var productsToShow = filteredProducts.slice(startIndex, endIndex);
 
-  productsToShow.forEach(function(p) {
-    var card = document.createElement('div');
-    card.classList.add('product-card');
-    card.innerHTML =
-      '<h3>' + p.title + '</h3>' +
-      '<p>Precio: ' + p.price + '</p>' +
-      '<p>Categoría: ' + p.category + '</p>' +
-      '<p>Stock: <span class="stock-value" data-id="' + p.id + '">' + productStocks[p.id] + '</span></p>' +
-      '<button onclick="window.open(\'https://wa.me/549XXXXXXXXX?text=Hola, quiero consultar por ' + encodeURIComponent(p.title) + '\')">Consultar</button>';
-    container.appendChild(card);
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("product-container");
+
+    if (!container) return;
+
+    // Objeto auxiliar para stock actual
+    const productStocks = {};
+    products.forEach(p => productStocks[p.id] = p.stock);
+
+    // Renderizado dinámico
+    products.forEach(function (p) {
+      const card = document.createElement('div');
+      card.classList.add('product-card');
+
+      card.innerHTML = `
+        <img src="${p.image}" alt="${p.title}" class="product-image">
+        <h3>${p.title}</h3>
+        <p>Precio: ${p.price}</p>
+        <p>Categoría: ${p.category}</p>
+        <p>Stock: <span class="stock-value" data-id="${p.id}">${productStocks[p.id]}</span></p>
+
+        <div class="product-actions">
+          <button class="whatsapp-btn"
+            onclick="window.open('https://wa.me/549XXXXXXXXX?text=Hola, quiero consultar por ${encodeURIComponent(p.title)}')">
+            Consultar
+          </button>
+
+          <button class="edit-btn"
+            onclick="window.location.href='EditarDatos?id=${p.id}'">
+            Editar
+          </button>
+        </div>
+      `;
+
+      container.appendChild(card);
+    });
   });
 
   updatePaginationButtons();
@@ -134,9 +161,9 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Botones CRUD (placeholder)
-  document.querySelectorAll('.action-btn').forEach(function(btn) {
+  document.querySelectorAll('.action-btn.create-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
-      alert('Funcionalidad CRUD próximamente');
+      window.location.href = 'crearProducto.jsp';
     });
   });
 

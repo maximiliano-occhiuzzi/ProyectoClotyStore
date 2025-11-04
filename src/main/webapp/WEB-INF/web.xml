@@ -6,7 +6,7 @@
          version="4.0">
 
     <welcome-file-list>
-        <welcome-file>vistas/index.jsp</welcome-file>
+        <welcome-file>LeerDatos</welcome-file>
     </welcome-file-list>
 
 </web-app>

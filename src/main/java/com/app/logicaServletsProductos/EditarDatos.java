@@ -7,35 +7,73 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Servlet implementation class EditarDatos
- */
+import com.app.logica.ControladoraLogica;
+import com.app.logica.Productos;
+
 @WebServlet("/EditarDatos")
 public class EditarDatos extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public EditarDatos() {
-        super();
-        // TODO Auto-generated constructor stub
+    private static final long serialVersionUID = 1L;
+
+    ControladoraLogica control = new ControladoraLogica();
+
+    // ======================
+    // MOSTRAR FORMULARIO (GET)
+    // ======================
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        try {
+            // Obtener el ID del producto desde la URL
+            int id = Integer.parseInt(request.getParameter("id"));
+
+            // Buscar el producto en la base de datos
+            Productos producto = control.buscarUnProducto(id);
+
+            if (producto != null) {
+                // Enviar producto al JSP
+                request.setAttribute("producto", producto);
+                request.getRequestDispatcher("editarproducto.jsp").forward(request, response);
+            } else {
+                // Si no se encuentra el producto
+                response.getWriter().println("Producto no encontrado con ID: " + id);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().println("Error al cargar el producto: " + e.getMessage());
+        }
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
+    // ======================
+    // ACTUALIZAR PRODUCTO (POST)
+    // ======================
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+        try {
+            // Obtener datos del formulario
+            int id = Integer.parseInt(request.getParameter("id"));
+            String nombre = request.getParameter("nombre");
+            double precio = Double.parseDouble(request.getParameter("precio"));
+            int stock = Integer.parseInt(request.getParameter("stock"));
+            String categoria = request.getParameter("categoria");
+            String imagen = request.getParameter("imagen");
 
+            // Crear objeto producto con los nuevos datos
+            Productos producto = new Productos(nombre, precio, stock, categoria, imagen);
+            producto.setId(id);
+
+            // Actualizar en BD
+            control.editarProducto(producto);
+
+            // Volver al listado
+            response.sendRedirect("LeerDatos");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().println("❌ Error al actualizar producto: " + e.getMessage());
+        }
+    }
 }

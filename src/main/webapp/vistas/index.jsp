@@ -56,8 +56,9 @@
 						</ul>
 					</div>
 					<div class="sidebar-actions">
-						<form action="CrearDatos" method="GET">
-							<button type="submit" class="action-btn create-btn">crear</button>
+						<form action="${pageContext.request.contextPath}/vistas/crearProducto.jsp" method="GET">
+							<button type="submit" class="action-btn create-btn">Crear
+								producto</button>
 						</form>
 						<form action="LeerDatos" method="GET">
 							<button type="submit" class="action-btn update-btn">actualizar</button>
@@ -90,11 +91,34 @@
 		</section>
 	</main>
 	<!-- Bloque JSP que inyecta los datos del servidor -->
-	<script> const products = [ <%List<Productos> productos = (List<Productos>) request.getAttribute("productos");
+	<script>
+const products = [
+  <%List<Productos> productos = (List<Productos>) request.getAttribute("productos");
 if (productos != null && !productos.isEmpty()) {
 	for (int i = 0; i < productos.size(); i++) {
-		Productos p = productos.get(i);%> { id: <%=p.getId()%>, title: "<%=p.getNombre()%>", price: "$<%=p.getPrecio()%>", category: "<%=p.getCategoria()%>", stock: <%=p.getStock()%> }<%=(i < productos.size() - 1) ? "," : ""%> <%}
-} else {%> { id: 0, title: "Sin productos disponibles", price: "-", category: "-", stock: 0 } <%}%> ]; </script>
-	<script src="${pageContext.request.contextPath}/scripts/index.js"></script>
+		Productos p = productos.get(i);%>
+      {
+          id: <%=p.getId()%>,
+          title: "<%=p.getNombre()%>",
+          price: "$<%=p.getPrecio()%>",
+          category: "<%=p.getCategoria()%>",
+          stock: <%=p.getStock()%>,
+          image: "<%=p.getImagen()%>"
+      }<%=(i < productos.size() - 1) ? "," : ""%>
+  <%}
+} else {%>
+      {
+          id: 0,
+          title: "Sin productos disponibles",
+          price: "-",
+          category: "-",
+          stock: 0,
+          image: ""
+      }
+  <%}%>
+];
+</script>
+
+	<script src="${pageContext.request.contextPath}/scripts/main.js"></script>
 </body>
 </html>

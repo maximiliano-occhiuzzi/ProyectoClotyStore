@@ -7,35 +7,35 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Servlet implementation class CrearDatos
- */
+import com.app.logica.ControladoraLogica;
+import com.app.logica.Productos;
+
 @WebServlet("/CrearDatos")
 public class CrearDatos extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CrearDatos() {
-        super();
-        // TODO Auto-generated constructor stub
+    private static final long serialVersionUID = 1L;
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        try {
+            // 1️⃣ Recibir los datos del formulario
+            String nombre = request.getParameter("nombre");
+            double precio = Double.parseDouble(request.getParameter("precio"));
+            int stock = Integer.parseInt(request.getParameter("stock"));
+            String categoria = request.getParameter("categoria");
+            String imagen = request.getParameter("imagen");
+
+            // 2️⃣ Llamar a la capa lógica
+            ControladoraLogica control = new ControladoraLogica();
+            control.crearProducto(nombre, precio, stock, categoria, imagen);
+
+            // 3️⃣ Redirigir o mostrar mensaje
+            response.sendRedirect("LeerDatos");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Error al crear el producto: " + e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
 }

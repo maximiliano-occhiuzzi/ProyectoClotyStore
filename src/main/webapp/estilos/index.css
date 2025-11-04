@@ -244,6 +244,39 @@ body {
   color: var(--white);
   border-color: var(--black);
 }
+.product-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.consultar-btn, .editar-btn {
+  flex: 1;
+  margin: 0 4px;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.consultar-btn {
+  background-color: #25d366; /* Verde WhatsApp */
+}
+
+.consultar-btn:hover {
+  background-color: #1ebe5d;
+}
+
+.editar-btn {
+  background-color: #007bff; /* Azul */
+}
+
+.editar-btn:hover {
+  background-color: #0069d9;
+}
 
 .products-container {
   flex: 1;
