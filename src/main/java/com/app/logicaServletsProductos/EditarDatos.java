@@ -33,7 +33,7 @@ public class EditarDatos extends HttpServlet {
             if (producto != null) {
                 // Enviar producto al JSP
                 request.setAttribute("producto", producto);
-                request.getRequestDispatcher("editarproducto.jsp").forward(request, response);
+                request.getRequestDispatcher("/vistas/editarproducto.jsp").forward(request, response);
             } else {
                 // Si no se encuentra el producto
                 response.getWriter().println("Producto no encontrado con ID: " + id);

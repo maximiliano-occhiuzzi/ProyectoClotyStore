@@ -26,25 +26,31 @@ function renderProducts() {
     var endIndex = startIndex + ITEMS_PER_PAGE;
     var productsToShow = filteredProducts.slice(startIndex, endIndex);
 
-    productsToShow.forEach(function(p) {
-        var card = document.createElement('div');
-        card.classList.add('product-card');
+	productsToShow.forEach(function(p) {
+	    var card = document.createElement('div');
+	    card.classList.add('product-card');
 
-        card.innerHTML =
-            '<img src="' + (p.image || "https://via.placeholder.com/150") + '" alt="' + p.title + '" class="product-image">' +
-            '<h3>' + p.title + '</h3>' +
-            '<p>Precio: ' + p.price + '</p>' +
-            '<p>Categoría: ' + p.category + '</p>' +
-            '<p>Stock: <span class="stock-value" data-id="' + p.id + '">' + productStocks[p.id] + '</span></p>' +
-            '<div class="product-actions">' +
-            '<button onclick="window.open(\'https://wa.me/549XXXXXXXXX?text=Hola, quiero consultar por ' + encodeURIComponent(p.title) + '\')">Consultar</button>' +
-            '<button onclick="window.location.href=\'EditarDatos?id=' + p.id + '\'">Editar</button>' +
-            '</div>';
+	    card.innerHTML =
+	        '<img src="' + (p.image || "https://via.placeholder.com/150") + '" alt="' + p.title + '" class="product-image">' +
+	        '<h3>' + p.title + '</h3>' +
+	        '<p>Precio: ' + p.price + '</p>' +
+	        '<p>Categoría: ' + p.category + '</p>' +
+	        '<p>Stock: <span class="stock-value" data-id="' + p.id + '">' + productStocks[p.id] + '</span></p>' +
+	        '<div class="product-actions">' +
+	            '<button class="consultar-btn" onclick="window.open(\'https://wa.me/549XXXXXXXXX?text=Hola, quiero consultar por ' + encodeURIComponent(p.title) + '\')">Consultar</button>' +
+	            '<button class="editar-btn" onclick="window.location.href=\'' + window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, "") + '/EditarDatos?id=' + p.id + '\'">Editar</button>' +
+	            '<button class="eliminar-btn" onclick="if(confirm(\'¿Seguro que deseas eliminar el producto "' + p.title + '"?\')) window.location.href=\'EliminarDatos?id=' + p.id + '\'">Eliminar</button>' +
+	        '</div>';
 
-        container.appendChild(card);
-    });
+	    container.appendChild(card);
+	});
 
-    updatePaginationButtons();
+	updatePaginationButtons();
+}
+function eliminarProducto(id, nombre) {
+    if (confirm('¿Seguro que deseas eliminar el producto "' + nombre + '"?')) {
+        window.location.href = 'EliminarDatos?id=' + id;
+    }
 }
 
 function updatePaginationButtons() {

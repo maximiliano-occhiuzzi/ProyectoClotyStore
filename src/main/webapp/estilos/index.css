@@ -247,36 +247,52 @@ body {
 .product-actions {
   display: flex;
   justify-content: space-between;
+  gap: 8px;
   margin-top: 10px;
 }
 
-.consultar-btn, .editar-btn {
+/* Botones de acción dentro de cada producto */
+.consultar-btn, .editar-btn, .eliminar-btn {
   flex: 1;
-  margin: 0 4px;
   padding: 8px 10px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   color: #fff;
-  font-weight: bold;
-  transition: background-color 0.2s ease;
+  font-weight: 600;
+  transition: all 0.25s ease;
 }
 
+/* Consultar (WhatsApp) */
 .consultar-btn {
-  background-color: #25d366; /* Verde WhatsApp */
+  background-color: #25d366;
 }
-
 .consultar-btn:hover {
-  background-color: #1ebe5d;
+  background-color: #1ebe5b;
 }
 
+/* Editar */
 .editar-btn {
-  background-color: #007bff; /* Azul */
+  background-color: #007bff;
 }
-
 .editar-btn:hover {
   background-color: #0069d9;
 }
+
+/* Eliminar */
+.eliminar-btn {
+  background-color: #dc3545;
+}
+.eliminar-btn:hover {
+  background-color: #b91c1c;
+  transform: scale(1.05);
+}
+
+/* Pequeño efecto cuando se presiona */
+.product-actions button:active {
+  transform: scale(0.95);
+}
+
 
 .products-container {
   flex: 1;

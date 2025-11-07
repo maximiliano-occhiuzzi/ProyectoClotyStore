@@ -26,7 +26,7 @@ public class LeerDatos extends HttpServlet {
             lista.removeIf(p -> p.getStock() <= 0);
 
             request.setAttribute("productos", lista);
-            request.getRequestDispatcher("vistas/index.jsp").forward(request, response);
+            request.getRequestDispatcher("/vistas/index.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();

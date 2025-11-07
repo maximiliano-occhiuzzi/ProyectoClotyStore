@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
 <%@ page import="com.app.logica.Productos"%>
+
 <!doctype html>
 <html lang="es">
 <head>
@@ -33,8 +34,8 @@
 				<h2 class="hero-title">Bienvenido a clotyStore</h2>
 				<p class="hero-subtitle">Descubre nuestra colección de productos
 					exclusivos</p>
-				<button class="cta-button" data-navigate="productos">Ver
-					productos</button>
+			<button class="cta-button" id="verProductosBtn">Ver productos</button>
+
 			</div>
 		</section>
 		<!-- Sección de productos -->
@@ -56,16 +57,13 @@
 						</ul>
 					</div>
 					<div class="sidebar-actions">
-						<form action="${pageContext.request.contextPath}/vistas/crearProducto.jsp" method="GET">
+						<form
+							action="${pageContext.request.contextPath}/vistas/crearProducto.jsp"
+							method="GET">
 							<button type="submit" class="action-btn create-btn">Crear
 								producto</button>
 						</form>
-						<form action="LeerDatos" method="GET">
-							<button type="submit" class="action-btn update-btn">actualizar</button>
-						</form>
-						<form action="EliminarDatos" method="GET">
-							<button type="submit" class="action-btn delete-btn">eliminar</button>
-						</form>
+
 					</div>
 				</aside>
 				<!-- Contenedor de productos -->
@@ -100,7 +98,7 @@ if (productos != null && !productos.isEmpty()) {
       {
           id: <%=p.getId()%>,
           title: "<%=p.getNombre()%>",
-          price: "$<%=p.getPrecio()%>",
+          price: <%=p.getPrecio()%>,
           category: "<%=p.getCategoria()%>",
           stock: <%=p.getStock()%>,
           image: "<%=p.getImagen()%>"
@@ -110,7 +108,7 @@ if (productos != null && !productos.isEmpty()) {
       {
           id: 0,
           title: "Sin productos disponibles",
-          price: "-",
+          price: 0,
           category: "-",
           stock: 0,
           image: ""
@@ -118,7 +116,8 @@ if (productos != null && !productos.isEmpty()) {
   <%}%>
 ];
 </script>
+	<script src="${pageContext.request.contextPath}/scripts/index.js" defer></script>
 
-	<script src="${pageContext.request.contextPath}/scripts/main.js"></script>
 </body>
+
 </html>
