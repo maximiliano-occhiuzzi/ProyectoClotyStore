@@ -26,25 +26,40 @@ function renderProducts() {
     var endIndex = startIndex + ITEMS_PER_PAGE;
     var productsToShow = filteredProducts.slice(startIndex, endIndex);
 
-    productsToShow.forEach(function(p) {
-        var card = document.createElement('div');
-        card.classList.add('product-card');
+	
+	// 🔹 Define el contexto global (para construir URLs absolutas)
+	const basePath = window.location.pathname.substring(0, window.location.pathname.indexOf('/', 1));
 
-        card.innerHTML =
-            '<img src="' + (p.image || "https://via.placeholder.com/150") + '" alt="' + p.title + '" class="product-image">' +
-            '<h3>' + p.title + '</h3>' +
-            '<p>Precio: ' + p.price + '</p>' +
-            '<p>Categoría: ' + p.category + '</p>' +
-            '<p>Stock: <span class="stock-value" data-id="' + p.id + '">' + productStocks[p.id] + '</span></p>' +
-            '<div class="product-actions">' +
-            '<button onclick="window.open(\'https://wa.me/549XXXXXXXXX?text=Hola, quiero consultar por ' + encodeURIComponent(p.title) + '\')">Consultar</button>' +
-            '<button onclick="window.location.href=\'EditarDatos?id=' + p.id + '\'">Editar</button>' +
-            '</div>';
+	// 🔹 Define la función eliminarProducto() antes del render
+	function eliminarProducto(id, nombre) {
+	    if (confirm('¿Seguro que deseas eliminar el producto "' + nombre + '"?')) {
+	        window.location.href = basePath + '/EliminarDatos?id=' + id;
+	    }
+	}
 
-        container.appendChild(card);
-    });
+	// 🔹 Luego tu render de productos
+	productsToShow.forEach(function(p) {
+	    var card = document.createElement('div');
+	    card.classList.add('product-card');
 
-    updatePaginationButtons();
+	    card.innerHTML =
+	        '<img src="' + (p.image || "https://via.placeholder.com/150") + '" alt="' + p.title + '" class="product-image">' +
+	        '<h3>' + p.title + '</h3>' +
+	        '<p>Precio: ' + p.price + '</p>' +
+	        '<p>Categoría: ' + p.category + '</p>' +
+	        '<p>Stock: <span class="stock-value" data-id="' + p.id + '">' + productStocks[p.id] + '</span></p>' +
+	        '<div class="product-actions">' +
+	            '<button class="consultar-btn" onclick="window.open(\'https://wa.me/549XXXXXXXXX?text=Hola, quiero consultar por ' + encodeURIComponent(p.title) + '\')">Consultar</button>' +
+	            '<button class="editar-btn" onclick="window.location.href=\'' + basePath + '/EditarDatos?id=' + p.id + '\'">Editar</button>' +
+	            '<button class="eliminar-btn" onclick="eliminarProducto(' + p.id + ', \'' + p.title.replace(/'/g, "\\'") + '\')">Eliminar</button>' +
+	        '</div>';
+
+	    container.appendChild(card);
+	});
+
+	updatePaginationButtons();
+
+
 }
 
 function updatePaginationButtons() {

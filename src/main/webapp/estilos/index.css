@@ -287,6 +287,67 @@ body {
   background-color: #b91c1c;
   transform: scale(1.05);
 }
+.confirm-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.confirm-box {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  text-align: center;
+  width: 300px;
+  font-family: sans-serif;
+  animation: fadeIn 0.25s ease;
+}
+
+.confirm-buttons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn-yes {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-no {
+  background-color: #ccc;
+  color: black;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-yes:hover {
+  background-color: #c62828;
+}
+
+.btn-no:hover {
+  background-color: #b0b0b0;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
 
 /* Pequeño efecto cuando se presiona */
 .product-actions button:active {
@@ -550,18 +611,35 @@ body {
     margin-bottom: 0;
   }
 
-  .category-btn {
-    padding: 0.5rem 1rem;
-    border: 1px solid #e5e5e5;
-    border-radius: 20px;
-    background-color: var(--white);
-  }
+.category-btn {
+  display: inline-block;
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #f5f5f5;
+  border: 1px solid #d4d4d4;
+  border-radius: 25px;
+  font-size: 0.95rem;
+  color: var(--dark-gray);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
 
-  .category-btn.active {
-    background-color: var(--black);
-    color: var(--white);
-    border-color: var(--black);
-  }
+.category-btn:hover {
+  background-color: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+  transform: translateY(-2px);
+}
+
+.category-btn.active {
+  background-color: var(--black);
+  color: var(--white);
+  font-weight: 500;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
 
   .sidebar-actions {
     border-top: none;
