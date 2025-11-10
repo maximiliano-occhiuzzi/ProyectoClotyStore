@@ -8,7 +8,7 @@
 <meta charset="UTF-8" />
 <title>clotyStore - Tienda Online</title>
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/estilos/index.css">
+	href="${pageContext.request.contextPath}/estilos/main.css">
 </head>
 <body>
 	<header class="header">
@@ -34,7 +34,8 @@
 				<h2 class="hero-title">Bienvenido a clotyStore</h2>
 				<p class="hero-subtitle">Descubre nuestra colección de productos
 					exclusivos</p>
-			<button class="cta-button" id="verProductosBtn">Ver productos</button>
+				<button class="cta-button" id="verProductosBtn">Ver
+					productos</button>
 
 			</div>
 		</section>
@@ -46,16 +47,11 @@
 				<aside class="sidebar">
 					<div class="sidebar-section">
 						<h3 class="sidebar-title">Categorías</h3>
-						<ul class="category-list">
-							<li><button class="category-btn active" data-category="all">Todas</button></li>
-							<li><button class="category-btn" data-category="Categoría A">Categoría
-									A</button></li>
-							<li><button class="category-btn" data-category="Categoría B">Categoría
-									B</button></li>
-							<li><button class="category-btn" data-category="Categoría C">Categoría
-									C</button></li>
+						<ul class="category-list" id="categoryList">
+							<!-- Se generarán dinámicamente -->
 						</ul>
 					</div>
+
 					<div class="sidebar-actions">
 						<form
 							action="${pageContext.request.contextPath}/vistas/crearProducto.jsp"
@@ -66,6 +62,15 @@
 
 					</div>
 				</aside>
+				<div id="confirmModal" class="confirm-modal hidden">
+					<div class="confirm-box">
+						<p id="confirmMessage"></p>
+						<div class="confirm-buttons">
+							<button id="confirmYes" class="btn-yes">Sí, eliminar</button>
+							<button id="confirmNo" class="btn-no">Cancelar</button>
+						</div>
+					</div>
+				</div>
 				<!-- Contenedor de productos -->
 				<div class="products-container">
 					<div class="products-grid" id="productsGrid">
@@ -116,7 +121,42 @@ if (productos != null && !productos.isEmpty()) {
   <%}%>
 ];
 </script>
-	<script src="${pageContext.request.contextPath}/scripts/index.js" defer></script>
+<script>
+const menus = [
+	<%
+	List<Menus> menus = (List<Menus>) request.getAttribute("listaMenus");
+	if (menus != null && !menus.isEmpty()) {
+	    for (int i = 0; i < menus.size(); i++) {
+	        Menus m = menus.get(i);
+	%>
+	    {
+	        id: <%=m.getId()%>,
+	        title: "<%=m.getNombre()%>",
+	        description: "<%=m.getDescripcion()%>",
+	        price: <%=m.getPrecio()%>,
+	        image: "<%=m.getImagen()%>"
+	    }<%= (i < menus.size() - 1) ? "," : "" %>
+	<%
+	    }
+	} else {
+	%>
+	    {
+	        id: 0,
+	        title: "Sin menús disponibles",
+	        description: "",
+	        price: 0,
+	        image: ""
+	    }
+	<%
+	}
+	%>
+	];
+
+
+</script>
+
+	<script src="${pageContext.request.contextPath}/scripts/main.js" defer></script>
+
 
 </body>
 

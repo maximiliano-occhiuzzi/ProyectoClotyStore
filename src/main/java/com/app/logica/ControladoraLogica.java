@@ -8,6 +8,95 @@ public class ControladoraLogica {
     // Instancia de la capa de persistencia
     ControladoraPersistencia controlPersis = new ControladoraPersistencia();
 
+ // ======================
+ // CRUD - MENÚS
+ // ======================
+
+ // Crear menú
+ public void crearMenu(String nombre, String descripcion, double precio, String imagen) throws Exception {
+
+     // Validaciones
+     if (nombre == null || nombre.trim().isEmpty()) {
+         throw new Exception("El nombre del menú no puede estar vacío.");
+     }
+
+     if (descripcion == null || descripcion.trim().isEmpty()) {
+         throw new Exception("La descripción no puede estar vacía.");
+     }
+
+     if (precio <= 0) {
+         throw new Exception("El precio debe ser mayor que 0.");
+     }
+
+     if (imagen == null || imagen.trim().isEmpty()) {
+         throw new Exception("Debe incluir una imagen para el menú.");
+     }
+
+     // Crear el objeto
+     Menus menu = new Menus();
+     menu.setNombre(nombre);
+     menu.setDescripcion(descripcion);
+     menu.setPrecio(precio);
+     menu.setImagen(imagen);
+
+     // Guardar en BD
+     controlPersis.crearMenu(menu);
+ }
+
+ // Editar menú
+ public void editarMenu(Menus menu) throws Exception {
+
+     Menus existente = controlPersis.buscarMenu(menu.getId());
+
+     if (existente == null) {
+         throw new Exception("No existe un menú con ID " + menu.getId());
+     }
+
+     // Validaciones
+     if (menu.getNombre() == null || menu.getNombre().trim().isEmpty()) {
+         throw new Exception("El nombre no puede estar vacío.");
+     }
+
+     if (menu.getDescripcion() == null || menu.getDescripcion().trim().isEmpty()) {
+         throw new Exception("La descripción es obligatoria.");
+     }
+
+     if (menu.getPrecio() <= 0) {
+         throw new Exception("El precio debe ser mayor que 0.");
+     }
+
+     if (menu.getNombre().length() > 100) {
+         throw new Exception("El nombre no puede superar los 100 caracteres.");
+     }
+
+     // Guardar cambios
+     controlPersis.editarMenu(menu);
+ }
+
+ // Eliminar menú
+ public void eliminarMenu(int id) throws Exception {
+
+     Menus menu = controlPersis.buscarMenu(id);
+
+     if (menu == null) {
+         throw new Exception("No existe un menú con ID " + id);
+     }
+
+     controlPersis.eliminarMenu(id);
+ }
+
+ // Buscar un menú por ID
+ public Menus buscarUnMenu(int id) {
+     return controlPersis.buscarMenu(id);
+ }
+
+ // Listar todos los menús
+ public List<Menus> listarMenus() {
+     return controlPersis.buscarTodosLosMenus();
+ }
+
+    
+    
     // ======================
     // CRUD - PRODUCTOS
     // ======================

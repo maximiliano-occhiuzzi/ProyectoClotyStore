@@ -8,7 +8,7 @@ products.forEach(function(product) {
     productStocks[product.id] = product.stock;
 });
 
-// --- Funciones de filtrado y renderizado ---
+// --- Funciones de filtrado ---
 function getFilteredProducts() {
     if (currentCategory === 'all') return products;
     return products.filter(function(product) {
@@ -16,6 +16,7 @@ function getFilteredProducts() {
     });
 }
 
+// --- Renderizado de productos ---
 function renderProducts() {
     var container = document.getElementById('productsGrid');
     if (!container) return;
@@ -26,7 +27,31 @@ function renderProducts() {
     var endIndex = startIndex + ITEMS_PER_PAGE;
     var productsToShow = filteredProducts.slice(startIndex, endIndex);
 
-    productsToShow.forEach(function(p) {
+    var basePath = window.location.pathname.substring(0, window.location.pathname.indexOf('/', 1));
+
+    // Función global de eliminación
+    window.eliminarProducto = function(id, nombre) {
+        var modal = document.getElementById('confirmModal');
+        var message = document.getElementById('confirmMessage');
+        var btnYes = document.getElementById('confirmYes');
+        var btnNo = document.getElementById('confirmNo');
+
+        message.textContent = '¿Seguro que deseas eliminar el producto "' + nombre + '"?';
+        modal.classList.remove('hidden');
+
+        btnYes.onclick = function() {
+            modal.classList.add('hidden');
+            window.location.href = window.location.pathname.replace(/\/[^\/]*$/, "") + '/EliminarDatos?id=' + id;
+        };
+
+        btnNo.onclick = function() {
+            modal.classList.add('hidden');
+        };
+    };
+
+    // Render de productos
+    for (var i = 0; i < productsToShow.length; i++) {
+        var p = productsToShow[i];
         var card = document.createElement('div');
         card.classList.add('product-card');
 
@@ -37,16 +62,18 @@ function renderProducts() {
             '<p>Categoría: ' + p.category + '</p>' +
             '<p>Stock: <span class="stock-value" data-id="' + p.id + '">' + productStocks[p.id] + '</span></p>' +
             '<div class="product-actions">' +
-            '<button onclick="window.open(\'https://wa.me/549XXXXXXXXX?text=Hola, quiero consultar por ' + encodeURIComponent(p.title) + '\')">Consultar</button>' +
-            '<button onclick="window.location.href=\'EditarDatos?id=' + p.id + '\'">Editar</button>' +
+                '<button class="consultar-btn" onclick="window.open(\'https://wa.me/549XXXXXXXXX?text=Hola, quiero consultar por ' + encodeURIComponent(p.title) + '\')">Consultar</button>' +
+                '<button class="editar-btn" onclick="window.location.href=\'' + basePath + '/EditarDatos?id=' + p.id + '\'">Editar</button>' +
+                '<button class="eliminar-btn" onclick="eliminarProducto(' + p.id + ', \'' + p.title.replace(/'/g, "\\'") + '\')">Eliminar</button>' +
             '</div>';
 
         container.appendChild(card);
-    });
+    }
 
     updatePaginationButtons();
 }
 
+// --- Botones de paginación ---
 function updatePaginationButtons() {
     var prevBtn = document.getElementById('prevBtn');
     var nextBtn = document.getElementById('nextBtn');
@@ -54,10 +81,10 @@ function updatePaginationButtons() {
     var totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
 
     if (prevBtn) prevBtn.disabled = currentPage === 1;
-    if (nextBtn) nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+    if (nextBtn) prevBtn.disabled = currentPage === totalPages || totalPages === 0;
 }
 
-// --- Control de stock (botones CRUD futuros) ---
+// --- Control manual de stock ---
 function handleStockChange(productId, action) {
     if (action === 'increase') {
         productStocks[productId]++;
@@ -92,11 +119,54 @@ function navigateToPage(page) {
     if (page === 'productos') renderProducts();
 }
 
+// --- Generar categorías dinámicamente ---
+function generarCategorias() {
+    var categoryList = document.getElementById('categoryList');
+    if (!categoryList) return;
+
+    categoryList.innerHTML = '';
+
+    var categorias = [];
+    for (var i = 0; i < products.length; i++) {
+        var categoria = products[i].category;
+        if (categorias.indexOf(categoria) === -1) {
+            categorias.push(categoria);
+        }
+    }
+
+    // Agregar botón "Todas"
+    var liTodas = document.createElement('li');
+    liTodas.innerHTML = '<button class="category-btn active" data-category="all">Todas</button>';
+    categoryList.appendChild(liTodas);
+
+    // Crear botones de categoría
+    for (var j = 0; j < categorias.length; j++) {
+        var li = document.createElement('li');
+        li.innerHTML = '<button class="category-btn" data-category="' + categorias[j] + '">' + categorias[j] + '</button>';
+        categoryList.appendChild(li);
+    }
+
+    // Agregar eventos
+    var catBtns = document.querySelectorAll('.category-btn');
+    for (var k = 0; k < catBtns.length; k++) {
+        catBtns[k].addEventListener('click', function(e) {
+            for (var m = 0; m < catBtns.length; m++) {
+                catBtns[m].classList.remove('active');
+            }
+            e.target.classList.add('active');
+            currentCategory = e.target.getAttribute('data-category');
+            currentPage = 1;
+            renderProducts();
+        });
+    }
+}
+
 // --- Inicialización general ---
 document.addEventListener('DOMContentLoaded', function() {
+    generarCategorias();
     renderProducts();
 
-    // Navegación con botones del menú
+    // Navegación del menú
     var navButtons = document.querySelectorAll('.nav-btn');
     for (var i = 0; i < navButtons.length; i++) {
         navButtons[i].addEventListener('click', function(e) {
@@ -105,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- BOTÓN “VER PRODUCTOS” (inicio) ---
+    // Botón "Ver productos"
     var verProductosBtn = document.getElementById('verProductosBtn');
     if (verProductosBtn) {
         verProductosBtn.addEventListener('click', function() {
@@ -113,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- Paginación ---
+    // Paginación
     var prevBtn = document.getElementById('prevBtn');
     var nextBtn = document.getElementById('nextBtn');
 
@@ -137,21 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- Filtros de categoría ---
-    var catBtns = document.querySelectorAll('.category-btn');
-    for (var k = 0; k < catBtns.length; k++) {
-        catBtns[k].addEventListener('click', function(e) {
-            for (var m = 0; m < catBtns.length; m++) {
-                catBtns[m].classList.remove('active');
-            }
-            e.target.classList.add('active');
-            currentCategory = e.target.getAttribute('data-category');
-            currentPage = 1;
-            renderProducts();
-        });
-    }
-
-    // --- Menú hamburguesa ---
+    // Menú hamburguesa
     var hamburger = document.querySelector('.hamburger');
     var navigation = document.querySelector('.navigation');
     if (hamburger && navigation) {
