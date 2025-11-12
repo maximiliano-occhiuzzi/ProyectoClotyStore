@@ -72,6 +72,35 @@ function renderProducts() {
 
     updatePaginationButtons();
 }
+// modal para confirmar la eliminacion del menu
+
+// --- Modal de confirmación de eliminación ---
+function abrirModal(idMenu) {
+  const modal = document.getElementById("modalEliminar");
+  const inputId = document.getElementById("menuIdEliminar");
+
+  if (modal && inputId) {
+    inputId.value = idMenu;
+    modal.style.display = "flex";
+  }
+}
+
+function cerrarModal() {
+  const modal = document.getElementById("modalEliminar");
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
+
+// Cerrar modal si se hace clic fuera del cuadro
+window.onclick = function (event) {
+  const modal = document.getElementById("modalEliminar");
+  if (event.target === modal) {
+    cerrarModal();
+  }
+};
+
+
 document.addEventListener("DOMContentLoaded", function() {
     var menuGrid = document.getElementById("menusGrid");
     if (menuGrid && typeof menus !== "undefined") {

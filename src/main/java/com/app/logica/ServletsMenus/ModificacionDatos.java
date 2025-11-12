@@ -32,8 +32,8 @@ public class ModificacionDatos extends HttpServlet {
             Menus menu = control.buscarUnMenu(id);
 
             if (menu != null) {
-                request.setAttribute("menu", menu);
-                request.getRequestDispatcher("/vistas/editarmenu.jsp").forward(request, response);
+            	request.setAttribute("menuEditar", menu);
+                request.getRequestDispatcher("/vistas/editarMenu.jsp").forward(request, response);
             } else {
                 response.getWriter().println("❌ No existe un menú con ID: " + id);
             }
