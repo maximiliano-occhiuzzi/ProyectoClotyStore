@@ -1,0 +1,125 @@
+@charset "UTF-8";
+     /* ===== Estilos específicos de la página de Menús ===== */
+        .menu-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .menu-header h1 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .create-btn {
+            background-color: #2d6cdf;
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .create-btn:hover {
+            background-color: #244fa0;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .menu-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .menu-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .menu-card-content {
+            padding: 1rem;
+            flex: 1;
+        }
+
+        .menu-card-content h3 {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .menu-card-content p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .menu-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            border-top: 1px solid #eee;
+            background-color: #fafafa;
+        }
+
+        .menu-card-footer span {
+            font-weight: bold;
+            color: #222;
+        }
+
+        .menu-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .menu-actions a {
+            padding: 6px 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 0.85rem;
+        }
+
+        .edit-btn {
+            background-color: #f0ad4e;
+        }
+
+        .delete-btn {
+            background-color: #d9534f;
+        }
+
+        .edit-btn:hover {
+            background-color: #ec971f;
+        }
+
+        .delete-btn:hover {
+            background-color: #c9302c;
+        }
+
+        .empty-state {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #777;
+            padding: 2rem 0;
+        }

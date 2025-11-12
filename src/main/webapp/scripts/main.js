@@ -72,6 +72,25 @@ function renderProducts() {
 
     updatePaginationButtons();
 }
+document.addEventListener("DOMContentLoaded", function() {
+    var menuGrid = document.getElementById("menusGrid");
+    if (menuGrid && typeof menus !== "undefined") {
+        var contenido = "";
+        for (var i = 0; i < menus.length; i++) {
+            var m = menus[i];
+            contenido +=
+                "<div class='menu-card'>" +
+                    "<img src='" + m.imagen + "' alt='" + m.nombre + "'>" +
+                    "<div class='menu-card-content'>" +
+                        "<h3>" + m.nombre + "</h3>" +
+                        "<p>" + m.descripcion + "</p>" +
+                        "<p class='price'>$" + m.precio.toFixed(2) + "</p>" +
+                    "</div>" +
+                "</div>";
+        }
+        menuGrid.innerHTML = contenido;
+    }
+});
 
 // --- Botones de paginación ---
 function updatePaginationButtons() {
