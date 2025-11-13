@@ -1,196 +1,233 @@
-package com.app.logica;
+ package com.app.logica;
 
 import java.util.List;
 import com.app.persistencia.ControladoraPersistencia;
 
 public class ControladoraLogica {
 
-    // Instancia de la capa de persistencia
-    ControladoraPersistencia controlPersis = new ControladoraPersistencia();
+	// Instancia de la capa de persistencia
+	ControladoraPersistencia controlPersis = new ControladoraPersistencia();
 
- // ======================
- // CRUD - MENÚS
- // ======================
+//	// ======================
+//	// CRUD - PEDIDOS
+//	// ======================
 
- // Crear menú
- public void crearMenu(String nombre, String descripcion, double precio, String imagen) throws Exception {
+//    public void crearPedido(String menuNombre, String descripcion, String horario, 
+//                            String nombreCliente, String cursoDivision) {
+//
+//        Pedido pedido = new Pedido();
+//
+//        pedido.setMenuNombre(menuNombre);
+//        pedido.setDescripcion(descripcion);
+//        pedido.setHorario(horario);
+//        pedido.setNombreCliente(nombreCliente);
+//        pedido.setCursoDivision(cursoDivision);
+//        pedido.setEstado("pendiente");
+//        pedido.setFechaCreacion(new java.util.Date());
+//
+//        controlPersistencia.crearPedido(pedido);
+//    }
+//
+//    public List<Pedido> traerPedidos() {
+//        return controlPersistencia.traerPedidos();
+//    }
+//
+//    public void eliminarPedido(int id) {
+//        controlPersistencia.eliminarPedido(id);
+//    }
+//
+//    public Pedido buscarPedido(int id) {
+//        return controlPersistencia.buscarPedido(id);
+//    }
+//
+//    public void editarPedido(Pedido pedido) {
+//        controlPersistencia.editarPedido(pedido);
+//    }
+//}
 
-     // Validaciones
-     if (nombre == null || nombre.trim().isEmpty()) {
-         throw new Exception("El nombre del menú no puede estar vacío.");
-     }
+	
+	// ======================
+	// CRUD - MENÚS
+	// ======================
 
-     if (descripcion == null || descripcion.trim().isEmpty()) {
-         throw new Exception("La descripción no puede estar vacía.");
-     }
+	// Crear menú
+	public void crearMenu(String nombre, String descripcion, double precio, String imagen) throws Exception {
 
-     if (precio <= 0) {
-         throw new Exception("El precio debe ser mayor que 0.");
-     }
+		// Validaciones
+		if (nombre == null || nombre.trim().isEmpty()) {
+			throw new Exception("El nombre del menú no puede estar vacío.");
+		}
 
-     if (imagen == null || imagen.trim().isEmpty()) {
-         throw new Exception("Debe incluir una imagen para el menú.");
-     }
+		if (descripcion == null || descripcion.trim().isEmpty()) {
+			throw new Exception("La descripción no puede estar vacía.");
+		}
 
-     // Crear el objeto
-     Menus menu = new Menus();
-     menu.setNombre(nombre);
-     menu.setDescripcion(descripcion);
-     menu.setPrecio(precio);
-     menu.setImagen(imagen);
+		if (precio <= 0) {
+			throw new Exception("El precio debe ser mayor que 0.");
+		}
 
-     // Guardar en BD
-     controlPersis.crearMenu(menu);
- }
+		if (imagen == null || imagen.trim().isEmpty()) {
+			throw new Exception("Debe incluir una imagen para el menú.");
+		}
 
- // Editar menú
- public void editarMenu(Menus menu) throws Exception {
+		// Crear el objeto
+		Menus menu = new Menus();
+		menu.setNombre(nombre);
+		menu.setDescripcion(descripcion);
+		menu.setPrecio(precio);
+		menu.setImagen(imagen);
 
-     Menus existente = controlPersis.buscarMenu(menu.getId());
+		// Guardar en BD
+		controlPersis.crearMenu(menu);
+	}
 
-     if (existente == null) {
-         throw new Exception("No existe un menú con ID " + menu.getId());
-     }
+	// Editar menú
+	public void editarMenu(Menus menu) throws Exception {
 
-     // Validaciones
-     if (menu.getNombre() == null || menu.getNombre().trim().isEmpty()) {
-         throw new Exception("El nombre no puede estar vacío.");
-     }
+		Menus existente = controlPersis.buscarMenu(menu.getId());
 
-     if (menu.getDescripcion() == null || menu.getDescripcion().trim().isEmpty()) {
-         throw new Exception("La descripción es obligatoria.");
-     }
+		if (existente == null) {
+			throw new Exception("No existe un menú con ID " + menu.getId());
+		}
 
-     if (menu.getPrecio() <= 0) {
-         throw new Exception("El precio debe ser mayor que 0.");
-     }
+		// Validaciones
+		if (menu.getNombre() == null || menu.getNombre().trim().isEmpty()) {
+			throw new Exception("El nombre no puede estar vacío.");
+		}
 
-     if (menu.getNombre().length() > 100) {
-         throw new Exception("El nombre no puede superar los 100 caracteres.");
-     }
+		if (menu.getDescripcion() == null || menu.getDescripcion().trim().isEmpty()) {
+			throw new Exception("La descripción es obligatoria.");
+		}
 
-     // Guardar cambios
-     controlPersis.editarMenu(menu);
- }
+		if (menu.getPrecio() <= 0) {
+			throw new Exception("El precio debe ser mayor que 0.");
+		}
 
- // Eliminar menú
- public void eliminarMenu(int id) throws Exception {
+		if (menu.getNombre().length() > 100) {
+			throw new Exception("El nombre no puede superar los 100 caracteres.");
+		}
 
-     Menus menu = controlPersis.buscarMenu(id);
+		// Guardar cambios
+		controlPersis.editarMenu(menu);
+	}
 
-     if (menu == null) {
-         throw new Exception("No existe un menú con ID " + id);
-     }
+	// Eliminar menú
+	public void eliminarMenu(int id) throws Exception {
 
-     controlPersis.eliminarMenu(id);
- }
+		Menus menu = controlPersis.buscarMenu(id);
 
- // Buscar un menú por ID
- public Menus buscarUnMenu(int id) {
-     return controlPersis.buscarMenu(id);
- }
+		if (menu == null) {
+			throw new Exception("No existe un menú con ID " + id);
+		}
 
- // Listar todos los menús
- public List<Menus> listarMenus() {
-     return controlPersis.buscarTodosLosMenus();
- }
+		controlPersis.eliminarMenu(id);
+	}
 
-    
-    
-    // ======================
-    // CRUD - PRODUCTOS
-    // ======================
+	// Buscar un menú por ID
+	public Menus buscarUnMenu(int id) {
+		return controlPersis.buscarMenu(id);
+	}
 
-    // Crear producto
-    public void crearProducto(String nombre, double precio, int stock, String categoria, String imagen) throws Exception {
+	// Listar todos los menús
+	public List<Menus> listarMenus() {
+		return controlPersis.buscarTodosLosMenus();
+	}
 
-        // Validaciones
-        if (nombre == null || nombre.trim().isEmpty()) {
-            throw new Exception("El nombre del producto no puede estar vacío.");
-        }
+	// ======================
+	// CRUD - PRODUCTOS
+	// ======================
 
-        if (precio <= 0) {
-            throw new Exception("El precio debe ser mayor que 0.");
-        }
+	// Crear producto
+	public void crearProducto(String nombre, double precio, int stock, String categoria, String imagen)
+			throws Exception {
 
-        if (stock < 0) {
-            throw new Exception("El stock no puede ser negativo.");
-        }
+		// Validaciones
+		if (nombre == null || nombre.trim().isEmpty()) {
+			throw new Exception("El nombre del producto no puede estar vacío.");
+		}
 
-        if (categoria == null || categoria.trim().isEmpty()) {
-            throw new Exception("La categoría del producto es obligatoria.");
-        }
+		if (precio <= 0) {
+			throw new Exception("El precio debe ser mayor que 0.");
+		}
 
-        if (imagen == null || imagen.trim().isEmpty()) {
-            throw new Exception("Debe incluir una imagen para el producto.");
-        }
+		if (stock < 0) {
+			throw new Exception("El stock no puede ser negativo.");
+		}
 
-        // Si pasa todas las validaciones, se crea el objeto
-        Productos prod = new Productos();
-        prod.setNombre(nombre);
-        prod.setPrecio(precio);
-        prod.setStock(stock);
-        prod.setCategoria(categoria);
-        prod.setImagen(imagen);
+		if (categoria == null || categoria.trim().isEmpty()) {
+			throw new Exception("La categoría del producto es obligatoria.");
+		}
 
-        // Se guarda en la BD
-        controlPersis.crearProducto(prod);
-    }
+		if (imagen == null || imagen.trim().isEmpty()) {
+			throw new Exception("Debe incluir una imagen para el producto.");
+		}
 
-    // Editar producto
-    public void editarProducto(Productos prod) throws Exception {
+		// Si pasa todas las validaciones, se crea el objeto
+		Productos prod = new Productos();
+		prod.setNombre(nombre);
+		prod.setPrecio(precio);
+		prod.setStock(stock);
+		prod.setCategoria(categoria);
+		prod.setImagen(imagen);
 
-        // Verificar existencia
-        Productos existente = controlPersis.buscarProducto(prod.getId());
-        if (existente == null) {
-            throw new Exception("No existe un producto con ID " + prod.getId());
-        }
+		// Se guarda en la BD
+		controlPersis.crearProducto(prod);
+	}
 
-        // Validaciones
-        if (prod.getNombre() == null || prod.getNombre().trim().isEmpty()) {
-            throw new Exception("El nombre del producto no puede estar vacío.");
-        }
+	// Editar producto
+	public void editarProducto(Productos prod) throws Exception {
 
-        if (prod.getPrecio() <= 0) {
-            throw new Exception("El precio debe ser mayor que 0.");
-        }
+		// Verificar existencia
+		Productos existente = controlPersis.buscarProducto(prod.getId());
+		if (existente == null) {
+			throw new Exception("No existe un producto con ID " + prod.getId());
+		}
 
-        if (prod.getStock() < 0) {
-            throw new Exception("El stock no puede ser negativo.");
-        }
+		// Validaciones
+		if (prod.getNombre() == null || prod.getNombre().trim().isEmpty()) {
+			throw new Exception("El nombre del producto no puede estar vacío.");
+		}
 
-        if (prod.getCategoria() == null || prod.getCategoria().trim().isEmpty()) {
-            throw new Exception("Debe especificarse una categoría.");
-        }
+		if (prod.getPrecio() <= 0) {
+			throw new Exception("El precio debe ser mayor que 0.");
+		}
 
-        // Validación adicional (opcional): verificar longitud del nombre
-        if (prod.getNombre().length() > 100) {
-            throw new Exception("El nombre no puede superar los 100 caracteres.");
-        }
+		if (prod.getStock() < 0) {
+			throw new Exception("El stock no puede ser negativo.");
+		}
 
-        // Guardar cambios
-        controlPersis.editarProducto(prod);
-    }
+		if (prod.getCategoria() == null || prod.getCategoria().trim().isEmpty()) {
+			throw new Exception("Debe especificarse una categoría.");
+		}
 
-    // Eliminar producto
-    public void eliminarProducto(int id) throws Exception {
+		// Validación adicional (opcional): verificar longitud del nombre
+		if (prod.getNombre().length() > 100) {
+			throw new Exception("El nombre no puede superar los 100 caracteres.");
+		}
 
-        Productos prod = controlPersis.buscarProducto(id);
+		// Guardar cambios
+		controlPersis.editarProducto(prod);
+	}
 
-        if (prod == null) {
-            throw new Exception("No existe un producto con ID " + id);
-        }
+	// Eliminar producto
+	public void eliminarProducto(int id) throws Exception {
 
-        controlPersis.eliminarProducto(id);
-    }
+		Productos prod = controlPersis.buscarProducto(id);
 
-    // Buscar un producto por ID
-    public Productos buscarUnProducto(int id) {
-        return controlPersis.buscarProducto(id);
-    }
+		if (prod == null) {
+			throw new Exception("No existe un producto con ID " + id);
+		}
 
-    // Listar todos los productos
-    public List<Productos> listarProductos() {
-        return controlPersis.buscarTodosLosProductos();
-    }
+		controlPersis.eliminarProducto(id);
+	}
+
+	// Buscar un producto por ID
+	public Productos buscarUnProducto(int id) {
+		return controlPersis.buscarProducto(id);
+	}
+
+	// Listar todos los productos
+	public List<Productos> listarProductos() {
+		return controlPersis.buscarTodosLosProductos();
+	}
 }

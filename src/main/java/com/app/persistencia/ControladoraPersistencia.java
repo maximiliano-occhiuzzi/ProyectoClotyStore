@@ -10,7 +10,46 @@ public class ControladoraPersistencia {
     // Instancia del controlador JPA para la entidad Productos
     private final ProductosJpaController productosJpa = new ProductosJpaController();
     private final MenusJpaController MenusJpa = new MenusJpaController();
-
+//    private final PedidoJpaController PedidoJpa = new PedidoJpaController();
+//
+//    // PEDIDOS
+//    // Alta
+//    public void crearPedido(Pedido pedido) {
+//        pedidoJPA.create(pedido);
+//    }
+//
+//    // Lectura
+//    public List<Pedido> traerPedidos() {
+//        return pedidoJPA.findPedidoEntities();
+//    }
+//
+//    // Búsqueda por ID
+//    public Pedido buscarPedido(int id) {
+//        return pedidoJPA.findPedido(id);
+//    }
+//
+//    // Modificación
+//    public void editarPedido(Pedido pedido) {
+//        try {
+//            pedidoJPA.edit(pedido);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    // Baja
+//    public void eliminarPedido(int id) {
+//        try {
+//            pedidoJPA.destroy(id);
+//        } catch (NonexistentEntityException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//}
+//    
+    
+    
+    
  // MENÚS
 
     public void crearMenu(Menus menu) {

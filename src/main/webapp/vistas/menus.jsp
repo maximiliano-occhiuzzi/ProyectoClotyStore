@@ -65,8 +65,11 @@
 							href="${pageContext.request.contextPath}/ModificacionDatos?id=<%=m.getId()%>"
 							class="edit-btn">Editar</a> <a href="javascript:void(0);"
 							class="delete-btn" onclick="abrirModal(<%=m.getId()%>)">Eliminar</a>
-
+						<a
+							href="${pageContext.request.contextPath}/vistas/crearPedido.jsp?menu=<%=m.getNombre()%>"
+							class="order-btn">Ordenar</a>
 					</div>
+
 				</div>
 			</div>
 			<!-- Modal de confirmación -->
@@ -77,7 +80,7 @@
 
 					<div class="modal-actions">
 						<form id="formEliminar" method="GET"
-							action="${pageContext.request.contextPath}/EliminarMenu">
+							action="${pageContext.request.contextPath}/BajaDatos">
 							<input type="hidden" name="id" id="menuIdEliminar">
 							<button type="submit" class="btn-confirmar">Eliminar</button>
 						</form>
