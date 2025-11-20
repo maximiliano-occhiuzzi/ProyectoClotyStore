@@ -30,7 +30,7 @@
 					class="nav-btn">Inicio</a> <a
 					href="${pageContext.request.contextPath}/LeerDatos" class="nav-btn">Productos</a>
 				<a href="${pageContext.request.contextPath}/LecturaDatos"
-					class="nav-btn active">Menús</a> <a href="pedidos.jsp"
+					class="nav-btn active">Menús</a> <a href="${pageContext.request.contextPath}/lecturaPedidos"
 					class="nav-btn">Pedidos</a>
 			</nav>
 		</div>

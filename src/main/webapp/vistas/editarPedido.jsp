@@ -1,13 +1,16 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="com.app.logica.Pedido" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.app.logica.Menus" %>
 
 <%
     Pedido p = (Pedido) request.getAttribute("pedido");
+    List<Menus> listaMenus = (List<Menus>) request.getAttribute("listaMenus");
 
-    if (p == null) {
+    if (p == null || listaMenus == null) {
 %>
-        <h2 style="color:red;">❌ Error: No se pudo cargar el pedido.</h2>
-        <a href="LeerPedido">Volver</a>
+    <h2 style="color:red;">❌ Error: No se pudo cargar el pedido o la lista de menús.</h2>
+    <a href="LeerPedidos">Volver</a>
 <%
         return;
     }
@@ -18,45 +21,79 @@
 <head>
 <meta charset="UTF-8">
 <title>Editar Pedido</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/estilos/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/estilos/menus.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/estilos/pedidos.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/estilos/formPedido.css">
 </head>
 
 <body>
 
-<div class="form-container">
+<main class="menu-container">
 
-    <h2>Editar Pedido</h2>
+    <div class="menu-header">
+        <h1>Editar Pedido</h1>
+        <a href="LeerPedidos" class="create-btn">Volver</a>
+    </div>
 
-    <form action="${pageContext.request.contextPath}/EditarPedido" method="POST">
+    <div class="crear-pedido-container">
+        <form action="${pageContext.request.contextPath}/EditarPedido" method="POST">
 
-        <!-- ID del pedido -->
-        <input type="hidden" name="id" value="<%= p.getId() %>">
+            <input type="hidden" name="id" value="<%= p.getId() %>">
 
-        <!-- Menú actual -->
-        <label>Menú seleccionado</label>
-        <input type="text" value="<%= p.getMenu().getNombre() %>" readonly class="readonly-input">
+            <div class="form-group">
+                <label for="menuSelect">Menú</label>
+                <select id="menuSelect" name="idMenu" required class="select-input">
+                    <option value="">-- Elegir menú --</option>
+                    <%
+                        for (Menus m : listaMenus) {
+                    %>
+                       <option value="<%= m.getId() %>" 
+    <%= (p.getMenu() != null && p.getMenu().getId() == m.getId()) ? "selected" : "" %>>
+    <%= m.getNombre() %> - $<%= m.getPrecio() %>
+</option>
+                    <% } %>
+                </select>
+            </div>
 
-        <!-- Envío del id real del menú (FK) -->
-        <input type="hidden" name="idMenu" value="<%= p.getMenu().getId() %>">
+            <div class="form-group">
+                <label for="nombreCliente">Cliente</label>
+                <input type="text" id="nombreCliente" name="nombreCliente" 
+                       value="<%= p.getNombreCliente() %>" required>
+            </div>
 
-        <label>Cliente</label>
-        <input type="text" name="nombreCliente" value="<%= p.getNombreCliente() %>" required>
+            <div class="form-group">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" name="descripcion" required><%= p.getDescripcion() %></textarea>
+            </div>
 
-        <label>Descripción</label>
-        <textarea name="descripcion" required><%= p.getDescripcion() %></textarea>
+            <div class="form-group">
+                <label for="horario">Horario</label>
+                <input type="time" id="horario" name="horario" value="<%= p.getHorario() %>" required>
+            </div>
 
-        <label>Horario</label>
-        <input type="time" name="horario" value="<%= p.getHorario() %>" required>
+            <div class="form-group">
+                <label for="cursoDivision">Curso / División</label>
+                <input type="text" id="cursoDivision" name="cursoDivision" value="<%= p.getCursoDivision() %>" required>
+            </div>
 
-        <label>Curso / División</label>
-        <input type="text" name="cursoDivision" value="<%= p.getCursoDivision() %>" required>
+            <div class="form-group">
+                <label for="estado">Estado</label>
+                <select id="estado" name="estado" class="select-input">
+                    <option value="pendiente" <%= p.getEstado().equals("pendiente") ? "selected" : "" %>>Pendiente</option>
+                    <option value="entregado" <%= p.getEstado().equals("entregado") ? "selected" : "" %>>Entregado</option>
+                </select>
+            </div>
 
-        <button type="submit" class="btn-guardar">Guardar cambios</button>
-        <a href="LeerPedido" class="btn-volver">Cancelar</a>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-crear">Guardar cambios</button>
+                <a href="LeerPedidos" class="btn btn-cancelar">Cancelar</a>
+            </div>
 
-    </form>
+        </form>
+    </div>
 
-</div>
+</main>
 
 </body>
 </html>

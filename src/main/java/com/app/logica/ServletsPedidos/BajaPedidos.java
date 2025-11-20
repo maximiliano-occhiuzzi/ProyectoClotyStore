@@ -23,6 +23,6 @@ public class BajaPedidos extends HttpServlet {
 
         control.eliminarPedido(id);
 
-        response.sendRedirect("LeerPedido");
+        response.sendRedirect("lecturaPedidos");
     }
 }

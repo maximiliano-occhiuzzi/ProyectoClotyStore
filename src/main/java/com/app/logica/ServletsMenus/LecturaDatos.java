@@ -28,5 +28,6 @@ public class LecturaDatos extends HttpServlet {
         // Envía datos al JSP
         request.setAttribute("listaMenus", lista);
         request.getRequestDispatcher("/vistas/menus.jsp").forward(request, response);
+
     }
 }

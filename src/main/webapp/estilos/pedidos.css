@@ -1,72 +1,143 @@
 @charset "UTF-8";
+
+/* ========================== */
+/*    ESTILO GENERAL FORM     */
+/* ========================== */
+
 body {
-  background: #f9f9f9;
-  font-family: system-ui, sans-serif;
-  padding: 40px;
+    background: #f9f9f9;
+    font-family: system-ui, sans-serif;
 }
 
-.form-container {
-  max-width: 450px;
-  margin: auto;
-  background: #fff;
-  border-radius: 12px;
-  padding: 30px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+/* ========================== */
+/*   CONTENEDOR PRINCIPAL     */
+/* ========================== */
+
+.orders-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 50px auto;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-weight: 400;
+.orders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
 }
 
-label {
-  font-size: 0.9rem;
-  color: #555;
+.orders-header h1 {
+    font-size: 2rem;
+    color: #333;
 }
 
-input, textarea {
-  width: 100%;
-  padding: 12px;
-  margin-top: 5px;
-  margin-bottom: 15px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  resize: none;
+/* Botón crear – igual al de menú */
+.btn-crear {
+    background-color: #2d6cdf;
+    color: white;
+    padding: 0.8rem 1.4rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: 0.3s ease;
 }
 
-textarea {
-  height: 120px;
+.btn-crear:hover {
+    background-color: #244fa0;
 }
 
-.btn-guardar {
-  width: 100%;
-  padding: 12px;
-  background: #222;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: 0.3s;
+/* ========================== */
+/*        GRID DE CARDS       */
+/* ========================== */
+
+.orders-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
 }
 
-.btn-guardar:hover {
-  background: #000;
+/* ========================== */
+/*           CARDS            */
+/* ========================== */
+
+.pedido-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    padding: 1.3rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease;
 }
 
-.btn-volver {
-  display: block;
-  text-align: center;
-  margin-top: 15px;
-  padding: 10px;
-  background: #ccc;
-  border-radius: 6px;
-  color: #000;
-  text-decoration: none;
+.pedido-card:hover {
+    transform: translateY(-6px);
 }
 
-.btn-volver:hover {
-  background: #bbb;
+.pedido-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: #222;
 }
+
+.pedido-card p {
+    color: #555;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+/* ========================== */
+/*       FOOTER DE CARD       */
+/* ========================== */
+
+.pedido-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 8px;
+}
+
+/* Botones iguales al menú */
+.btn-editar,
+.btn-eliminar {
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 0.85rem;
+    transition: 0.25s ease;
+}
+
+/* Editar */
+.btn-editar {
+    background-color: #f0ad4e;
+}
+
+.btn-editar:hover {
+    background-color: #ec971f;
+}
+
+/* Eliminar */
+.btn-eliminar {
+    background-color: #d9534f;
+}
+
+.btn-eliminar:hover {
+    background-color: #c9302c;
+}
+
+/* ========================== */
+/*  ESTADO LISTA VACÍA        */
+/* ========================== */
+
+.empty-state {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #777;
+    padding: 2rem;
+}
+input[readonly] {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+    pointer-events: all; /* permite seleccionar y hacer foco */
+}
+

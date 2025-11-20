@@ -15,48 +15,52 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/AltaPedidos")
 public class AltaPedidos extends HttpServlet {
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-        try {
-            // 1) Tomamos el ID del menú
-            int menuId = Integer.parseInt(request.getParameter("menuId"));
+		try {
+			request.setCharacterEncoding("UTF-8"); // importante para acentos
 
-            // 2) Otros datos del pedido
-            String horario = request.getParameter("horario");
-            String nombreCliente = request.getParameter("nombreCliente");
-            String cursoDivision = request.getParameter("cursoDivision");
+			// 1) Tomamos el ID del menú
+			int menuId = Integer.parseInt(request.getParameter("idMenu"));
 
-            // 3) Cargar controladora
-            ControladoraLogica control = new ControladoraLogica();
+			// 2) Otros datos del pedido
+			String horario = request.getParameter("horario");
+			String nombreCliente = request.getParameter("nombreCliente");
+			String cursoDivision = request.getParameter("cursoDivision");
+			String descripcion = request.getParameter("descripcion"); // <--- aquí estaba el problema
 
-            // 4) Buscar menú asociado
-            Menus menu = control.buscarMenu(menuId);
+			// 3) Cargar controladora
+			ControladoraLogica control = new ControladoraLogica();
 
-            if (menu == null) {
-                throw new Exception("El menú seleccionado no existe.");
-            }
+			// 4) Buscar menú asociado
+			Menus menu = control.buscarMenu(menuId);
 
-            // 5) Crear pedido
-            Pedido pedido = new Pedido();
-            pedido.setMenu(menu); // <-- RELACIÓN FK DIRECTA
-            pedido.setHorario(horario);
-            pedido.setNombreCliente(nombreCliente);
-            pedido.setCursoDivision(cursoDivision);
-            pedido.setEstado("pendiente");
-            pedido.setFechaCreacion(new java.util.Date());
+			if (menu == null) {
+				throw new Exception("El menú seleccionado no existe.");
+			}
 
-            // 6) Guardar en BD
-            control.crearPedido(pedido);
+			// 5) Crear pedido
+			Pedido pedido = new Pedido();
+			pedido.setMenu(menu);
+			pedido.setHorario(horario);
+			pedido.setNombreCliente(nombreCliente);
+			pedido.setCursoDivision(cursoDivision);
+			pedido.setDescripcion(descripcion); // <--- asignación correcta
+			pedido.setEstado("pendiente");
+			pedido.setFechaCreacion(new java.util.Date());
 
-            // 7) Redirigir
-            response.sendRedirect("LecturaPedidos");
+			// 6) Guardar en BD
+			control.crearPedido(pedido);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Error al crear el pedido: " + e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
-    }
+			// 7) Redirigir
+			response.sendRedirect("lecturaPedidos");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("error", "Error al crear el pedido: " + e.getMessage());
+			request.getRequestDispatcher("error.jsp").forward(request, response);
+		}
+	}
 }

@@ -130,36 +130,35 @@
 		</section>
 
 		<!-- Sección de pedidos -->
-<section id="pedidos" class="page">
-    <div class="orders-container">
-        <h2>Mis Pedidos</h2>
+		<section id="pedidos" class="page">
+			<div class="orders-container">
+				<h2>Mis Pedidos</h2>
 
-        <!-- Modal confirmación eliminar -->
-        <div id="confirmDeletePedido" class="confirm-modal hidden">
-            <div class="confirm-box">
-                <p>¿Seguro que querés eliminar este pedido?</p>
-                <div class="confirm-buttons">
-                    <button id="deletePedidoYes" class="btn-yes">Eliminar</button>
-                    <button id="deletePedidoNo" class="btn-no">Cancelar</button>
-                </div>
-            </div>
-        </div>
+				<!-- Modal confirmación eliminar -->
+				<div id="confirmDeletePedido" class="confirm-modal hidden">
+					<div class="confirm-box">
+						<p>¿Seguro que querés eliminar este pedido?</p>
+						<div class="confirm-buttons">
+							<button id="deletePedidoYes" class="btn-yes">Eliminar</button>
+							<button id="deletePedidoNo" class="btn-no">Cancelar</button>
+						</div>
+					</div>
+				</div>
 
-        <div id="ordersList" class="orders-list">
-            <p class="empty-state">Cargando pedidos...</p>
-        </div>
-    </div>
-</section>
+				<div id="ordersList" class="orders-list">
+					<p class="empty-state">Cargando pedidos...</p>
+				</div>
+			</div>
+		</section>
 	</main>
 
 	<!-- Bloque JSP que inyecta los datos del servidor -->
-<script>
+	<script>
 const products = [
-    <% 
-    List<Productos> productos = (List<Productos>) request.getAttribute("productos");
-    if (productos != null && !productos.isEmpty()) {
-        for (int i = 0; i < productos.size(); i++) {
-            Productos p = productos.get(i); %>
+    <%List<Productos> productos = (List<Productos>) request.getAttribute("productos");
+if (productos != null && !productos.isEmpty()) {
+	for (int i = 0; i < productos.size(); i++) {
+		Productos p = productos.get(i);%>
                 {
                     id: <%=p.getId()%>,
                     title: "<%=p.getNombre()%>",
@@ -167,58 +166,53 @@ const products = [
                     category: "<%=p.getCategoria()%>",
                     stock: <%=p.getStock()%>,
                     image: "<%=p.getImagen()%>"
-                }<%= (i < productos.size() - 1) ? "," : "" %>
-    <%  }
-    } else { %>
+                }<%=(i < productos.size() - 1) ? "," : ""%>
+    <%}
+} else {%>
         { id: 0, title: "Sin productos", price: 0, category: "-", stock: 0, image: "" }
-    <% } %>
+    <%}%>
 ];
 
 const menus = [
-    <% 
-    List<Menus> menus = (List<Menus>) request.getAttribute("listaMenus");
-    if (menus != null && !menus.isEmpty()) {
-        for (int i = 0; i < menus.size(); i++) {
-            Menus m = menus.get(i); %>
+    <%List<Menus> menus = (List<Menus>) request.getAttribute("listaMenus");
+	if (menus != null && !menus.isEmpty()) {
+		for (int i = 0; i < menus.size(); i++) {
+			Menus m = menus.get(i);%>
                 {
                     id: <%=m.getId()%>,
                     title: "<%=m.getNombre()%>",
                     description: "<%=m.getDescripcion()%>",
                     price: <%=m.getPrecio()%>,
                     image: "<%=m.getImagen()%>"
-                }<%= (i < menus.size() - 1) ? "," : "" %>
-    <%  }
-    } else { %>
+                }<%=(i < menus.size() - 1) ? "," : ""%>
+    <%}
+} else {%>
         { id: 0, title: "Sin menús", description: "", price: 0, image: "" }
-    <% } %>
+    <%}%>
 ];
 
 const pedidos = [
-    <% 
-    List<Pedido> lista = (List<Pedido>) request.getAttribute("listaPedidos");
-    if (lista != null && !lista.isEmpty()) {
-        for (int i = 0; i < lista.size(); i++) {
-            Pedido ped = lista.get(i);
+    <%List<Pedido> lista = (List<Pedido>) request.getAttribute("listaPedidos");
+	if (lista != null && !lista.isEmpty()) {
+		for (int i = 0; i < lista.size(); i++) {
+			Pedido ped = lista.get(i);
 
-            // Evitar null en el menú
-            String menuNombre = (ped.getMenu() != null) ? ped.getMenu().getNombre() : "Sin menú";
-            String menuDesc   = (ped.getMenu() != null) ? ped.getMenu().getDescripcion() : "";
-            String menuImg    = (ped.getMenu() != null) ? ped.getMenu().getImagen() : "";
-    %>
+			// Evitar null en el menú
+			String menuNombre = (ped.getMenu() != null) ? ped.getMenu().getNombre() : "Sin menú";
+			String menuDesc = (ped.getMenu() != null) ? ped.getMenu().getDescripcion() : "";
+			String menuImg = (ped.getMenu() != null) ? ped.getMenu().getImagen() : "";%>
         {
-            id: <%= ped.getId() %>,
-            menu: "<%= menuNombre %>",
-            descripcionMenu: "<%= menuDesc %>",
-            imagenMenu: "<%= menuImg %>",
-            descripcion: "<%= ped.getDescripcion() %>",
-            horario: "<%= ped.getHorario() %>",
-            cliente: "<%= ped.getNombreCliente() %>",
-            curso: "<%= ped.getCursoDivision() %>"
-        }<%= (i < lista.size() - 1) ? "," : "" %>
-    <% 
-        }
-    } else { 
-    %>
+            id: <%=ped.getId()%>,
+            menu: "<%=menuNombre%>",
+            descripcionMenu: "<%=menuDesc%>",
+            imagenMenu: "<%=menuImg%>",
+            descripcion: "<%=ped.getDescripcion()%>",
+            horario: "<%=ped.getHorario()%>",
+            cliente: "<%=ped.getNombreCliente()%>",
+            curso: "<%=ped.getCursoDivision()%>"
+        }<%=(i < lista.size() - 1) ? "," : ""%>
+    <%}
+} else {%>
         { 
             id: 0, 
             menu: "Sin pedidos", 
@@ -229,7 +223,7 @@ const pedidos = [
             cliente: "", 
             curso: "" 
         }
-    <% } %>
+    <%}%>
 ];
 
 </script>
