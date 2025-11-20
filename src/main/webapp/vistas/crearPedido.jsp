@@ -20,29 +20,41 @@
         </div>
         <nav class="navigation">
             <a href="${pageContext.request.contextPath}/LecturaDatos" class="nav-btn">Menús</a>
-            <a href="${pageContext.request.contextPath}/LeerPedidos" class="nav-btn active">Pedidos</a>
+            <a href="${pageContext.request.contextPath}/LeerPedido" class="nav-btn active">Pedidos</a>
         </nav>
     </div>
 </header>
 
 <main class="form-container">
     <h2>Generar nuevo pedido</h2>
-    <form action="${pageContext.request.contextPath}/AltaPedido" method="post" class="pedido-form">
+
+    <%
+        // Recibo los datos del menú seleccionados desde la página anterior
+        String menuNombre = request.getParameter("menu");
+        String menuId = request.getParameter("idMenu"); 
+    %>
+
+    <form action="${pageContext.request.contextPath}/AltaPedidos" method="post" class="pedido-form">
+
+        <!-- Envío oculto del ID real del menú -->
+        <input type="hidden" name="idMenu" value="<%= menuId != null ? menuId : "" %>">
 
         <label for="menu">Menú seleccionado:</label>
-        <input type="text" id="menu" name="menu" value="<%= request.getParameter("menu") != null ? request.getParameter("menu") : "" %>" readonly>
+        <input type="text" id="menu" name="menuNombre"
+               value="<%= menuNombre != null ? menuNombre : "" %>"
+               readonly>
 
-        <label for="descripcion">Descripción:</label>
+        <label for="descripcion">Descripción del pedido:</label>
         <textarea id="descripcion" name="descripcion" rows="3" required></textarea>
 
         <label for="horario">Horario deseado:</label>
         <input type="time" id="horario" name="horario" required>
 
-        <label for="nombre_cliente">Nombre de quien realiza el pedido:</label>
-        <input type="text" id="nombre_cliente" name="nombre_cliente" required>
+        <label for="nombreCliente">Nombre de quien realiza el pedido:</label>
+        <input type="text" id="nombreCliente" name="nombreCliente" required>
 
-        <label for="curso_division">Curso o división:</label>
-        <input type="text" id="curso_division" name="curso_division" required>
+        <label for="cursoDivision">Curso o división:</label>
+        <input type="text" id="cursoDivision" name="cursoDivision" required>
 
         <label for="rol">Tipo de usuario:</label>
         <select id="rol" name="rol" required>

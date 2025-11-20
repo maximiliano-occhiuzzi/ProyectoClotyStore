@@ -3,62 +3,59 @@ package com.app.persistencia;
 import java.util.List;
 
 import com.app.logica.Menus;
+import com.app.logica.Pedido;
 import com.app.logica.Productos;
 
 public class ControladoraPersistencia {
 
-    // Instancia del controlador JPA para la entidad Productos
+    // Instancias JPA
     private final ProductosJpaController productosJpa = new ProductosJpaController();
-    private final MenusJpaController MenusJpa = new MenusJpaController();
-//    private final PedidoJpaController PedidoJpa = new PedidoJpaController();
-//
-//    // PEDIDOS
-//    // Alta
-//    public void crearPedido(Pedido pedido) {
-//        pedidoJPA.create(pedido);
-//    }
-//
-//    // Lectura
-//    public List<Pedido> traerPedidos() {
-//        return pedidoJPA.findPedidoEntities();
-//    }
-//
-//    // Búsqueda por ID
-//    public Pedido buscarPedido(int id) {
-//        return pedidoJPA.findPedido(id);
-//    }
-//
-//    // Modificación
-//    public void editarPedido(Pedido pedido) {
-//        try {
-//            pedidoJPA.edit(pedido);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    // Baja
-//    public void eliminarPedido(int id) {
-//        try {
-//            pedidoJPA.destroy(id);
-//        } catch (NonexistentEntityException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//}
-//    
-    
-    
-    
- // MENÚS
+    private final MenusJpaController menusJpa = new MenusJpaController();  // ← corregido
+    private final PedidoJpaController pedidoJpa = new PedidoJpaController();
+
+    // ======================
+    // CRUD - PEDIDOS
+    // ======================
+
+    public void crearPedido(Pedido pedido) {
+        pedidoJpa.create(pedido);
+    }
+
+    public List<Pedido> traerPedidos() {
+        return pedidoJpa.findPedidoEntities();
+    }
+
+    public Pedido buscarPedido(int id) {
+        return pedidoJpa.findPedido(id);
+    }
+
+    public void editarPedido(Pedido pedido) {
+        try {
+            pedidoJpa.edit(pedido);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void eliminarPedido(int id) {
+        try {
+            pedidoJpa.destroy(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // ======================
+    // CRUD - MENÚS
+    // ======================
 
     public void crearMenu(Menus menu) {
-    	MenusJpa.create(menu);
+        menusJpa.create(menu);
     }
 
     public void editarMenu(Menus menu) {
         try {
-        	MenusJpa.edit(menu);
+            menusJpa.edit(menu);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,29 +63,24 @@ public class ControladoraPersistencia {
 
     public void eliminarMenu(int id) {
         try {
-        	MenusJpa.destroy(id);
+            menusJpa.destroy(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public Menus buscarMenu(int id) {
-        return MenusJpa.findMenus(id);
+        return menusJpa.findMenus(id);
     }
 
     public List<Menus> buscarTodosLosMenus() {
-        return MenusJpa.findMenusEntities();
+        return menusJpa.findMenusEntities();
     }
 
-    
-    
-    
-    
     // ======================
     // CRUD - PRODUCTOS
     // ======================
 
-    // Crear un producto
     public void crearProducto(Productos producto) {
         try {
             productosJpa.create(producto);
@@ -97,17 +89,14 @@ public class ControladoraPersistencia {
         }
     }
 
-    // Buscar un producto por ID
     public Productos buscarProducto(int id) {
         return productosJpa.findProductos(id);
     }
 
-    // Buscar todos los productos
     public List<Productos> buscarTodosLosProductos() {
         return productosJpa.findProductosEntities();
     }
 
-    // Editar producto existente
     public void editarProducto(Productos producto) {
         try {
             productosJpa.edit(producto);
@@ -116,7 +105,6 @@ public class ControladoraPersistencia {
         }
     }
 
-    // Eliminar un producto
     public void eliminarProducto(int id) {
         try {
             productosJpa.destroy(id);

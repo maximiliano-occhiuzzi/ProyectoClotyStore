@@ -8,42 +8,58 @@ public class ControladoraLogica {
 	// Instancia de la capa de persistencia
 	ControladoraPersistencia controlPersis = new ControladoraPersistencia();
 
-//	// ======================
-//	// CRUD - PEDIDOS
-//	// ======================
+	// ======================
+	// CRUD - PEDIDOS
+	// ======================
 
-//    public void crearPedido(String menuNombre, String descripcion, String horario, 
-//                            String nombreCliente, String cursoDivision) {
-//
-//        Pedido pedido = new Pedido();
-//
-//        pedido.setMenuNombre(menuNombre);
-//        pedido.setDescripcion(descripcion);
-//        pedido.setHorario(horario);
-//        pedido.setNombreCliente(nombreCliente);
-//        pedido.setCursoDivision(cursoDivision);
-//        pedido.setEstado("pendiente");
-//        pedido.setFechaCreacion(new java.util.Date());
-//
-//        controlPersistencia.crearPedido(pedido);
-//    }
-//
-//    public List<Pedido> traerPedidos() {
-//        return controlPersistencia.traerPedidos();
-//    }
-//
-//    public void eliminarPedido(int id) {
-//        controlPersistencia.eliminarPedido(id);
-//    }
-//
-//    public Pedido buscarPedido(int id) {
-//        return controlPersistencia.buscarPedido(id);
-//    }
-//
-//    public void editarPedido(Pedido pedido) {
-//        controlPersistencia.editarPedido(pedido);
-//    }
-//}
+	// Alta pedido con FK al menú
+	public void crearPedido(int idMenu, String descripcion, String horario,
+	                        String nombreCliente, String cursoDivision) {
+
+	    Menus menu = controlPersis.buscarMenu(idMenu);
+
+	    Pedido pedido = new Pedido();
+	    pedido.setMenu(menu);
+	    pedido.setDescripcion(descripcion);
+	    pedido.setHorario(horario);
+	    pedido.setNombreCliente(nombreCliente);
+	    pedido.setCursoDivision(cursoDivision);
+	    pedido.setEstado("pendiente");
+	    pedido.setFechaCreacion(new java.util.Date());
+
+	    controlPersis.crearPedido(pedido);
+	}
+
+	// Nuevo: llamado por el servlet cuando ya se armó el objeto Pedido
+	public void crearPedido(Pedido pedido) {
+	    controlPersis.crearPedido(pedido);
+	}
+
+	// Nuevo: método llamado por el servlet AltaPedidos
+	public Menus buscarMenu(int idMenu) {
+	    return controlPersis.buscarMenu(idMenu);
+	}
+
+	// Listado
+	public List<Pedido> traerPedidos() {
+	    return controlPersis.traerPedidos();
+	}
+
+	// Buscar por ID
+	public Pedido buscarPedido(int id) {
+	    return controlPersis.buscarPedido(id);
+	}
+
+	// Editar
+	public void editarPedido(Pedido pedido) {
+	    controlPersis.editarPedido(pedido);
+	}
+
+	// Eliminar
+	public void eliminarPedido(int id) {
+	    controlPersis.eliminarPedido(id);
+	}
+
 
 	
 	// ======================

@@ -2,6 +2,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="com.app.logica.Productos"%>
 <%@ page import="com.app.logica.Menus"%>
+<%@ page import="com.app.logica.Pedido"%>
 
 <!doctype html>
 <html lang="es">
@@ -22,8 +23,9 @@
 				<button class="nav-btn active" data-page="inicio">inicio</button>
 				<button class="nav-btn" data-page="productos">productos</button>
 				<a href="${pageContext.request.contextPath}/LecturaDatos"
-					class="nav-btn">menú</a>
-				<button class="nav-btn" data-page="pedidos">pedidos</button>
+					class="nav-btn">menú</a> <a
+					href="${pageContext.request.contextPath}/lecturaPedidos"
+					class="nav-btn">pedidos</a>
 			</nav>
 
 			<button class="hamburger" aria-label="Menu">
@@ -128,68 +130,110 @@
 		</section>
 
 		<!-- Sección de pedidos -->
-		<section id="pedidos" class="page">
-			<div class="orders-container">
-				<h2>Mis Pedidos</h2>
-				<div id="ordersList" class="orders-list">
-					<p class="empty-state">No tienes pedidos aún</p>
-				</div>
-			</div>
-		</section>
+<section id="pedidos" class="page">
+    <div class="orders-container">
+        <h2>Mis Pedidos</h2>
+
+        <!-- Modal confirmación eliminar -->
+        <div id="confirmDeletePedido" class="confirm-modal hidden">
+            <div class="confirm-box">
+                <p>¿Seguro que querés eliminar este pedido?</p>
+                <div class="confirm-buttons">
+                    <button id="deletePedidoYes" class="btn-yes">Eliminar</button>
+                    <button id="deletePedidoNo" class="btn-no">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="ordersList" class="orders-list">
+            <p class="empty-state">Cargando pedidos...</p>
+        </div>
+    </div>
+</section>
 	</main>
 
 	<!-- Bloque JSP que inyecta los datos del servidor -->
-	<script>
-	const products = [
-	  <%List<Productos> productos = (List<Productos>) request.getAttribute("productos");
-if (productos != null && !productos.isEmpty()) {
-	for (int i = 0; i < productos.size(); i++) {
-		Productos p = productos.get(i);%>
-	      {
-	          id: <%=p.getId()%>,
-	          title: "<%=p.getNombre()%>",
-	          price: <%=p.getPrecio()%>,
-	          category: "<%=p.getCategoria()%>",
-	          stock: <%=p.getStock()%>,
-	          image: "<%=p.getImagen()%>"
-	      }<%=(i < productos.size() - 1) ? "," : ""%>
-	  <%}
-} else {%>
-	      {
-	          id: 0,
-	          title: "Sin productos disponibles",
-	          price: 0,
-	          category: "-",
-	          stock: 0,
-	          image: ""
-	      }
-	  <%}%>
-	];
+<script>
+const products = [
+    <% 
+    List<Productos> productos = (List<Productos>) request.getAttribute("productos");
+    if (productos != null && !productos.isEmpty()) {
+        for (int i = 0; i < productos.size(); i++) {
+            Productos p = productos.get(i); %>
+                {
+                    id: <%=p.getId()%>,
+                    title: "<%=p.getNombre()%>",
+                    price: <%=p.getPrecio()%>,
+                    category: "<%=p.getCategoria()%>",
+                    stock: <%=p.getStock()%>,
+                    image: "<%=p.getImagen()%>"
+                }<%= (i < productos.size() - 1) ? "," : "" %>
+    <%  }
+    } else { %>
+        { id: 0, title: "Sin productos", price: 0, category: "-", stock: 0, image: "" }
+    <% } %>
+];
 
-	const menus = [
-	  <%List<Menus> menus = (List<Menus>) request.getAttribute("listaMenus");
-	if (menus != null && !menus.isEmpty()) {
-		for (int i = 0; i < menus.size(); i++) {
-			Menus m = menus.get(i);%>
-	      {
-	          id: <%=m.getId()%>,
-	          title: "<%=m.getNombre()%>",
-	          description: "<%=m.getDescripcion()%>",
-	          price: <%=m.getPrecio()%>,
-	          image: "<%=m.getImagen()%>"
-	      }<%=(i < menus.size() - 1) ? "," : ""%>
-	  <%}
-} else {%>
-	      {
-	          id: 0,
-	          title: "Sin menús disponibles",
-	          description: "",
-	          price: 0,
-	          image: ""
-	      }
-	  <%}%>
-	];
-	</script>
+const menus = [
+    <% 
+    List<Menus> menus = (List<Menus>) request.getAttribute("listaMenus");
+    if (menus != null && !menus.isEmpty()) {
+        for (int i = 0; i < menus.size(); i++) {
+            Menus m = menus.get(i); %>
+                {
+                    id: <%=m.getId()%>,
+                    title: "<%=m.getNombre()%>",
+                    description: "<%=m.getDescripcion()%>",
+                    price: <%=m.getPrecio()%>,
+                    image: "<%=m.getImagen()%>"
+                }<%= (i < menus.size() - 1) ? "," : "" %>
+    <%  }
+    } else { %>
+        { id: 0, title: "Sin menús", description: "", price: 0, image: "" }
+    <% } %>
+];
+
+const pedidos = [
+    <% 
+    List<Pedido> lista = (List<Pedido>) request.getAttribute("listaPedidos");
+    if (lista != null && !lista.isEmpty()) {
+        for (int i = 0; i < lista.size(); i++) {
+            Pedido ped = lista.get(i);
+
+            // Evitar null en el menú
+            String menuNombre = (ped.getMenu() != null) ? ped.getMenu().getNombre() : "Sin menú";
+            String menuDesc   = (ped.getMenu() != null) ? ped.getMenu().getDescripcion() : "";
+            String menuImg    = (ped.getMenu() != null) ? ped.getMenu().getImagen() : "";
+    %>
+        {
+            id: <%= ped.getId() %>,
+            menu: "<%= menuNombre %>",
+            descripcionMenu: "<%= menuDesc %>",
+            imagenMenu: "<%= menuImg %>",
+            descripcion: "<%= ped.getDescripcion() %>",
+            horario: "<%= ped.getHorario() %>",
+            cliente: "<%= ped.getNombreCliente() %>",
+            curso: "<%= ped.getCursoDivision() %>"
+        }<%= (i < lista.size() - 1) ? "," : "" %>
+    <% 
+        }
+    } else { 
+    %>
+        { 
+            id: 0, 
+            menu: "Sin pedidos", 
+            descripcionMenu: "",
+            imagenMenu: "",
+            descripcion: "", 
+            horario: "", 
+            cliente: "", 
+            curso: "" 
+        }
+    <% } %>
+];
+
+</script>
+
 
 	<script src="${pageContext.request.contextPath}/scripts/main.js" defer></script>
 </body>
